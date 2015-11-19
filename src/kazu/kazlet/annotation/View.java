@@ -1,7 +1,5 @@
 package kazu.kazlet.annotation;
 
-import com.sun.istack.internal.NotNull;
-
 import java.lang.annotation.*;
 
 @Documented
@@ -9,7 +7,6 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 public @interface View {
 
-    @NotNull
     String value();
 
 }

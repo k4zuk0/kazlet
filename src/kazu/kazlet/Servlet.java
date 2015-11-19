@@ -14,7 +14,15 @@ public abstract class Servlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<Map<String, Object>> opt = this.get(request, response);
+        handleReturn(request, response, this.get(request, response));
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        handleReturn(request, response, this.post(request, response));
+    }
+
+    protected void handleReturn(HttpServletRequest request, HttpServletResponse response, Optional<Map<String, Object>> opt) throws ServletException, IOException {
         opt.ifPresent(map -> map.forEach(request::setAttribute));
 
         Optional<View> viewOpt = Optional.empty();
@@ -40,8 +48,9 @@ public abstract class Servlet extends HttpServlet {
             return;
         }
 
-        System.out.println("Unhandlable method :'c");
+        throw new IllegalStateException("No annotation");
     }
 
-    abstract public Optional<Map<String, Object>> get(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    abstract public Optional<Map<String, Object>> get(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException;
+    abstract public Optional<Map<String, Object>> post(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 }
